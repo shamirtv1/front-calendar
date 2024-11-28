@@ -1,5 +1,5 @@
 /* Modal */
-.ReactModalPortal > div{
+.ReactModalPortal>div {
     opacity: 0;
 }
 
@@ -33,8 +33,32 @@
     border-radius: 5px;
     color: rgb(51, 51, 51);
     display: inline;
-    max-height: 620px;
+    max-height: 550px;
     max-width: 500px;
     outline: none;
     padding: 10px;
+}
+
+.fab {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    position: absolute;
+    border: none;
+    outline: none;
+    color: #FFF;
+}
+
+.fab-plus {
+    right: 0;
+    bottom: 0;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.fab-delete {
+    left: 0;
+    bottom: 0;
+    margin-left: 16px;
+    margin-bottom: 16px;
 }

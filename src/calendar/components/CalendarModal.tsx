@@ -1,11 +1,13 @@
-import { addHours, addDays, differenceInSeconds } from 'date-fns';
+import { useEffect } from 'react';
 
+import { addSeconds, differenceInSeconds } from 'date-fns';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale/es'
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import Modal from 'react-modal';
 import { useCalendarStore, useUiStore } from '../../hooks';
+
 
 
 registerLocale('es', es)
@@ -26,27 +28,32 @@ type Inputs = { title: string, notes: string, start: Date, end: Date }
 export const CalendarModal = () => {
 
     const { isDateModalOpen, closeDateModal } = useUiStore()
-    const { activeEvent } = useCalendarStore()
+    const { activeEvent, startSavingEvent } = useCalendarStore()
 
-    const { register, handleSubmit, control, watch, formState } = useForm<Inputs>({
+    const { register, handleSubmit, control, watch, formState, reset, getValues  } = useForm<Inputs>({
         defaultValues: {
             ...activeEvent
         }
     })
 
+    //ACTUALIZA LOS CAMPOS DEL FORMULARIO CADA VEZ QUE CAMBIA LA NOTA ACTIVA
+    useEffect(() => {
+        reset({...activeEvent});
+    }, [activeEvent]);
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
         const difference = differenceInSeconds(data.end, data.start)
-        console.log({ difference })
 
         if (difference <= 0) {
             console.log('Error en las fechas')
             return;
         }
 
-        if (formState.isValid) {
 
+        if (formState.isValid) {
+            await startSavingEvent(getValues());
+            closeDateModal();
         }
 
     }
@@ -103,7 +110,7 @@ export const CalendarModal = () => {
                                 render={({ field: { value, onChange } }) => (
                                     <DatePicker
                                         locale={'es'}
-                                        minDate={addDays(watch('start'), 1)}
+                                        minDate={addSeconds(watch('start'), 1)}
                                         dateFormat="Pp"
                                         className={!value ? 'form-control is-invalid' : 'form-control'}
                                         selected={value}

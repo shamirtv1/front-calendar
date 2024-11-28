@@ -2,9 +2,10 @@ import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { localizer, getMessagesES } from '../helpers';
 
-import { CalendarEvent, CalendarModal, NavBar } from "./components"
+import { CalendarEvent, CalendarModal, FloatingDelButton, FloatingPlusButton, NavBar } from "./components"
 import { useState } from 'react';
 import { useCalendarStore, useUiStore } from '../hooks';
+import { eventCalendar } from '../store';
 
 
 
@@ -29,10 +30,10 @@ export const CalendarApp = () => {
 
   }
 
-  const onSelected = ( event: any ) => {
-    setEventActive(event)
-    //console.log({ click: event });
-  } 
+  //COLOCA LA NOTA CLIQUEADA COMO NOTA ACTIVA
+  const onSelected = ( event: eventCalendar ) => setEventActive(event);
+  
+  
 
   const onViewChanged = ( event: string ) => {
     localStorage.setItem('lastView', event)
@@ -60,6 +61,8 @@ export const CalendarApp = () => {
         onView={ onViewChanged }
       />
       <CalendarModal />
+      <FloatingPlusButton/>
+      <FloatingDelButton />
     </>
   )
 }
