@@ -1,7 +1,6 @@
 
 import {createBrowserRouter} from "react-router-dom";
 
-
 import { CalendarApp } from "../calendar/CalendarApp";
 import { PrivateRoute, PublicRoute } from "../router";
 import { AuthLayout } from "../auth/AuthLayout";

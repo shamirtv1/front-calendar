@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
 
 export const RegisterPage = () => {
+
+
+
+
     return (
         <>
             <div className="col-xl-8">
@@ -33,11 +37,11 @@ export const RegisterPage = () => {
                                     <form>
                                     <div className="form-group">
                                             <label>FullName</label>
-                                            <input type="email" className="form-control" id="exampleInputEmail1" />
+                                            <input type="email" className="form-control" />
                                         </div>
                                         <div className="form-group">
                                             <label>Email address</label>
-                                            <input type="email" className="form-control" id="exampleInputEmail1" />
+                                            <input type="email" className="form-control" />
                                         </div>
                                         <div className="form-group mb-5">
                                             <label>Password</label>

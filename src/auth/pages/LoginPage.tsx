@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom"
 
+import { useForm, SubmitHandler } from "react-hook-form"
+
+
+type Inputs = {
+    email: string
+    password: string
+}
+
 
 export const LoginPage = () => {
+
+
+    const { register, handleSubmit, formState: { errors, dirtyFields, touchedFields } } = useForm<Inputs>()
+    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
     return (
         <>
             <div className="col-xl-8">
@@ -20,14 +33,32 @@ export const LoginPage = () => {
                                         Gestione su tiempo de manera eficiente
                                     </p>
 
-                                    <form>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="form-group">
                                             <label>Email address</label>
-                                            <input type="email" className="form-control" id="exampleInputEmail1" />
+                                            <input
+                                                type="email"
+                                                className={`form-control ${(errors.email && touchedFields.email) ? 'is-invalid' : 'is-valid'}`}
+                                                {...register("email", { required: true })}
+                                            />
+                                            {
+                                                (errors.email && (dirtyFields.email || touchedFields.email)) &&
+                                                <div className="invalid-feedback">
+                                                    <ul>
+                                                        {
+                                                            errors.email?.type === "required" && (<li>Email name is required</li>)
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
                                         </div>
                                         <div className="form-group mb-5">
                                             <label>Password</label>
-                                            <input type="password" className="form-control" id="exampleInputPassword1" />
+                                            <input
+                                                type="password"
+                                                className="form-control"
+                                                {...register("password", { required: true })}
+                                            />
                                         </div>
                                         <button type="submit" className="btn btn-theme">Login</button>
 
@@ -45,7 +76,7 @@ export const LoginPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                     </div>
@@ -54,7 +85,7 @@ export const LoginPage = () => {
 
 
                 <p className="text-center mt-3">
-                    Don't have an account? 
+                    Don't have an account?
                     <Link to={'/auth/register'} className="text-primary ml-1">register</Link>
                 </p>
 

@@ -11,7 +11,7 @@ const initialState: uiState = {
 }
 
 export const uiSlice = createSlice({
-    name: 'name',
+    name: 'ui',
     initialState,
     reducers: {
         onOpenDateModal: ( state: uiState ) => {
