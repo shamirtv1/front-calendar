@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useAuthStore } from "../../hooks"
 
 
 type Inputs = {
@@ -11,9 +12,12 @@ type Inputs = {
 
 export const LoginPage = () => {
 
+    const { startLogin } = useAuthStore()
 
     const { register, handleSubmit, formState: { errors, dirtyFields, touchedFields } } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        startLogin(data);
+    }
 
     return (
         <>
@@ -38,17 +42,19 @@ export const LoginPage = () => {
                                             <label>Email address</label>
                                             <input
                                                 type="email"
-                                                className={`form-control ${(errors.email && touchedFields.email) ? 'is-invalid' : 'is-valid'}`}
-                                                {...register("email", { required: true })}
+                                                className={`form-control ${(errors.email && touchedFields.email) ? 'is-invalid' : (!errors.email && dirtyFields.email) ? 'is-valid' : ''}`}
+                                                {...register("email", {
+                                                    required: "Email is required",
+                                                    pattern: {
+                                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                        message: "Invalid email address",
+                                                    }
+                                                })}
                                             />
                                             {
                                                 (errors.email && (dirtyFields.email || touchedFields.email)) &&
                                                 <div className="invalid-feedback">
-                                                    <ul>
-                                                        {
-                                                            errors.email?.type === "required" && (<li>Email name is required</li>)
-                                                        }
-                                                    </ul>
+                                                    <ul><li>{errors.email?.message}</li></ul>
                                                 </div>
                                             }
                                         </div>
@@ -56,9 +62,21 @@ export const LoginPage = () => {
                                             <label>Password</label>
                                             <input
                                                 type="password"
-                                                className="form-control"
-                                                {...register("password", { required: true })}
+                                                className={`form-control ${(errors.password && touchedFields.password) ? 'is-invalid' : (!errors.password && dirtyFields.password) ? 'is-valid' : ''}`}
+                                                {...register("password", {
+                                                    required: "You must specify a password",
+                                                    minLength: {
+                                                        value: 8,
+                                                        message: "Password must have at least 8 characters"
+                                                    }
+                                                })}
                                             />
+                                            {
+                                                (errors.password && (dirtyFields.password || touchedFields.password)) &&
+                                                <div className="invalid-feedback">
+                                                    <ul><li>{errors.password?.message}</li></ul>
+                                                </div>
+                                            }
                                         </div>
                                         <button type="submit" className="btn btn-theme">Login</button>
 

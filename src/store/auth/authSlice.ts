@@ -22,7 +22,7 @@ const initialState: authState = {
 
 export const authSlice = createSlice({
     name: 'auth',
-    initialState,
+    initialState, 
     reducers: {
         onChecking: ( state: authState ) => {
             state.status = authStatus.CHECKING;
@@ -31,12 +31,17 @@ export const authSlice = createSlice({
         },
         OnLogin: (state: authState,  actions: PayloadAction<IUser>) => {
             state.status = authStatus.AUTHENTICATED;
-            state.user = actions.payload;
+            state.user = {...actions.payload};
             state.errorMessage = null;
+        },
+        onLogout: ( state: authState,  actions: PayloadAction<string> ) => {
+            state.status = authStatus.NOUTHENTICATED;
+            state.user = {};
+            state.errorMessage = actions.payload;
         }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onChecking, OnLogin } = authSlice.actions;
+export const { onChecking, OnLogin, onLogout } = authSlice.actions;
