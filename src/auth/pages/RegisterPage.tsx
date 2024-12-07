@@ -1,11 +1,19 @@
+import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
+
+
+type Inputs = { name: string, email: string, password: string }
+
 
 export const RegisterPage = () => {
 
+    const { register, handleSubmit, formState: { errors, dirtyFields, touchedFields } } = useForm<Inputs>()
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data);
+    }
 
 
-
-    return (
+    return ( 
         <>
             <div className="col-xl-8">
                 <div className="card border-1">
@@ -34,13 +42,13 @@ export const RegisterPage = () => {
                                         Gestione su tiempo de manera eficiente
                                     </p>
 
-                                    <form>
+                                    <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="form-group">
-                                            <label>FullName</label>
+                                            <label>Name</label>
                                             <input type="email" className="form-control" />
                                         </div>
                                         <div className="form-group">
-                                            <label>Email address</label>
+                                            <label>Email</label>
                                             <input type="email" className="form-control" />
                                         </div>
                                         <div className="form-group mb-5">

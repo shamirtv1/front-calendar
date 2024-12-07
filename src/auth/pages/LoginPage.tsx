@@ -1,23 +1,30 @@
 import { Link } from "react-router-dom"
-
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
+import classNames from 'classnames';
+
+import { Toast } from "../../helpers";
 import { useAuthStore } from "../../hooks"
 
 
-type Inputs = {
-    email: string
-    password: string
-}
+
+
+type Inputs = { email: string, password: string }
 
 
 export const LoginPage = () => {
 
-    const { startLogin } = useAuthStore()
+    const { startLogin, errorMessage } = useAuthStore()
 
     const { register, handleSubmit, formState: { errors, dirtyFields, touchedFields } } = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         startLogin(data);
     }
+
+    useEffect(() => {
+        if (!!errorMessage)
+            Toast.fire({ icon: "error", title: errorMessage });
+    }, [errorMessage])
 
     return (
         <>
@@ -42,7 +49,7 @@ export const LoginPage = () => {
                                             <label>Email address</label>
                                             <input
                                                 type="email"
-                                                className={`form-control ${(errors.email && touchedFields.email) ? 'is-invalid' : (!errors.email && dirtyFields.email) ? 'is-valid' : ''}`}
+                                                className={classNames('form-control', { "is-invalid": errors.email && touchedFields.email })}
                                                 {...register("email", {
                                                     required: "Email is required",
                                                     pattern: {
@@ -54,7 +61,7 @@ export const LoginPage = () => {
                                             {
                                                 (errors.email && (dirtyFields.email || touchedFields.email)) &&
                                                 <div className="invalid-feedback">
-                                                    <ul><li>{errors.email?.message}</li></ul>
+                                                    {errors.email?.message}
                                                 </div>
                                             }
                                         </div>
@@ -62,7 +69,7 @@ export const LoginPage = () => {
                                             <label>Password</label>
                                             <input
                                                 type="password"
-                                                className={`form-control ${(errors.password && touchedFields.password) ? 'is-invalid' : (!errors.password && dirtyFields.password) ? 'is-valid' : ''}`}
+                                                className={classNames('form-control', { "is-invalid": errors.password && touchedFields.password })}
                                                 {...register("password", {
                                                     required: "You must specify a password",
                                                     minLength: {
@@ -74,7 +81,7 @@ export const LoginPage = () => {
                                             {
                                                 (errors.password && (dirtyFields.password || touchedFields.password)) &&
                                                 <div className="invalid-feedback">
-                                                    <ul><li>{errors.password?.message}</li></ul>
+                                                    {errors.password?.message}
                                                 </div>
                                             }
                                         </div>
