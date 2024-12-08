@@ -11,7 +11,7 @@ import { store } from './store/store'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} future={{ v7_startTransition: true }} />
+      <RouterProvider router={router} />
     </Provider>
   </StrictMode>,
 )

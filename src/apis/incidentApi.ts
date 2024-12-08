@@ -6,9 +6,7 @@ const { VITE_API_URL } = getEnvVariables();
 
 const incidentApi = axios.create({
     baseURL: VITE_API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    }
+    headers: { 'Content-Type': 'application/json' }
 });
 
 incidentApi.interceptors.request.use(function (config) {

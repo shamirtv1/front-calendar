@@ -2,19 +2,15 @@
 import {createBrowserRouter} from "react-router-dom";
 
 import { CalendarApp } from "../calendar/CalendarApp";
-import { PrivateRoute, PublicRoute } from "../router";
+import { PublicRoute } from "../router";
 import { AuthLayout } from "../auth/AuthLayout";
 import { LoginPage, RegisterPage } from "../auth/pages";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
-        path: "/",
-        element: <PrivateRoute Component={ <CalendarApp/> } /> ,
-        children: [ 
-            {
-                path: "", element: <CalendarApp/>
-            },
-        ]
+        path: "calendar",
+        element: <PrivateRoute Component={<CalendarApp/>} />,
     },
     {
         path: "auth",

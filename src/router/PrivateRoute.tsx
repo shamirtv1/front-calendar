@@ -1,5 +1,21 @@
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "../hooks";
+import { authStatus } from "../store";
+import { useEffect } from "react";
 
 
-export const PrivateRoute = ({ Component }: { Component: any }) => {
-    return Component
+const PrivateRoute = ({ Component }: { Component: any }) => {
+
+    const { status, checkAuthToken } = useAuthStore();
+
+
+    useEffect(()=>{
+        checkAuthToken();
+    }, [status])
+
+    
+    return (status === authStatus.AUTHENTICATED) ? Component : <Navigate to="/auth/login" />;
+
 };
+
+export default PrivateRoute;

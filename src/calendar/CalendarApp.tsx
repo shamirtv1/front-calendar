@@ -12,10 +12,12 @@ import { eventCalendar } from '../store';
 export const CalendarApp = () => {
 
   const { openDateModal } = useUiStore()
-  const { events, setEventActive } = useCalendarStore()
+  const { events, setEventActive } = useCalendarStore();
+
 
   //Tipo de vista por defecto semana, mes, dia o agenda
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || '')
+
   
   const eventStyleGetter = () => {
 
@@ -25,9 +27,8 @@ export const CalendarApp = () => {
       opacity: 0.8,
       color: 'white'
     }
-
+    
     return { style }
-
   }
 
   //COLOCA LA NOTA CLIQUEADA COMO NOTA ACTIVA
@@ -47,7 +48,7 @@ export const CalendarApp = () => {
         culture='es'
         localizer={localizer}
         events={events}
-        defaultView={ lastView as any }
+        defaultView={ lastView as any || 'month' }
         startAccessor="start"
         endAccessor="end"
         style={{ height: 'calc( 100vh - 80px )' }}

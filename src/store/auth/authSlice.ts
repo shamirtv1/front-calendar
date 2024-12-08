@@ -34,10 +34,10 @@ export const authSlice = createSlice({
             state.user = {...actions.payload};
             state.errorMessage = null;
         },
-        onLogout: ( state: authState,  actions: PayloadAction<string> ) => {
+        onLogout: ( state: authState,  actions: PayloadAction<string|null> ) => {
             state.status = authStatus.NOUTHENTICATED;
             state.user = {};
-            state.errorMessage = actions.payload;
+            state.errorMessage = actions.payload || null;
         }
     }
 });
