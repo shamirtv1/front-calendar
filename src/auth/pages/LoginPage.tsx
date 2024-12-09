@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import classNames from 'classnames';

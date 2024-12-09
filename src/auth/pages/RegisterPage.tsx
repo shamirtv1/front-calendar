@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import classNames from 'classnames';
 import { useAuthStore } from "../../hooks";
 import { useEffect } from "react";

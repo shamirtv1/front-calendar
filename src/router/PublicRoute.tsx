@@ -1,11 +1,13 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 import { useAuthStore } from "../hooks";
 import { authStatus } from "../store";
 
 
-export const PublicRoute = ({ Component }: { Component: any }) => {
+const PublicRoute = ({ Component }: { Component: any }) => {
     
     const { status } = useAuthStore();
-    return (status === authStatus.AUTHENTICATED) ? <Navigate to="/calendar" /> : Component;
+    return (status === authStatus.AUTHENTICATED) ? <Navigate to="/" /> : Component;
     
 };
+
+export default PublicRoute;
