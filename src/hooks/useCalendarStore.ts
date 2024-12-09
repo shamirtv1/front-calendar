@@ -1,4 +1,5 @@
-import { eventCalendar, onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent, useAppDispatch, useAppSelector } from "../store";
+import { incidentApi } from "../apis";
+import { eventCalendar, onAddNewEvent, onDeleteEvent, onLoadIncidents, onSetActiveEvent, onUpdateEvent, useAppDispatch, useAppSelector } from "../store";
 
 
 
@@ -17,7 +18,14 @@ export const useCalendarStore = () => {
         if(calendarEvent._id) {
             dispatch( onUpdateEvent( calendarEvent ) )  
         }else{
-            dispatch( onAddNewEvent( calendarEvent ) )  
+
+            try {
+                const { data: incident } = await incidentApi.post('/incident', calendarEvent);
+                dispatch( onAddNewEvent({ ...incident }) )  
+            } catch (error) {
+                console.log(error);
+            }
+            
         }
     }
 
@@ -25,6 +33,15 @@ export const useCalendarStore = () => {
         dispatch( onDeleteEvent() );
     }
 
+
+    const startLoadingIncident = async () => {
+        try {
+            const { data: incidents } = await incidentApi.get('/incident');
+            dispatch( onLoadIncidents(incidents) )  
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     
     return {
@@ -36,6 +53,7 @@ export const useCalendarStore = () => {
         //Funciones
         setEventActive,
         startSavingEvent,
-        startDeletingEvent
+        startDeletingEvent,
+        startLoadingIncident
     }
 }

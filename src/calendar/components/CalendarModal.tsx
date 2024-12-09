@@ -30,11 +30,7 @@ export const CalendarModal = () => {
     const { isDateModalOpen, closeDateModal } = useUiStore()
     const { activeEvent, startSavingEvent } = useCalendarStore()
 
-    const { register, handleSubmit, control, watch, formState, reset, getValues  } = useForm<Inputs>({
-        defaultValues: {
-            ...activeEvent
-        }
-    })
+    const { register, handleSubmit, control, watch, formState, reset, getValues  } = useForm<Inputs>()
 
     //ACTUALIZA LOS CAMPOS DEL FORMULARIO CADA VEZ QUE CAMBIA LA NOTA ACTIVA
     useEffect(() => {

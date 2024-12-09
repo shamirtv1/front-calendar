@@ -14,10 +14,6 @@ export const FloatingPlusButton = () => {
             start: new Date(),
             end: addHours(new Date(), 1),
             bgColor: '#fafafa',
-            user: {
-                _id: 123,
-                name: "Shamir"
-            }
         });
         openDateModal();
     }

@@ -3,7 +3,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { localizer, getMessagesES } from '../helpers';
 
 import { CalendarEvent, CalendarModal, FloatingDelButton, FloatingPlusButton, NavBar } from "./components"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCalendarStore, useUiStore } from '../hooks';
 import { eventCalendar } from '../store';
 
@@ -12,7 +12,7 @@ import { eventCalendar } from '../store';
 export const CalendarApp = () => {
 
   const { openDateModal } = useUiStore()
-  const { events, setEventActive } = useCalendarStore();
+  const { events, setEventActive, startLoadingIncident } = useCalendarStore();
 
 
   //Tipo de vista por defecto semana, mes, dia o agenda
@@ -41,6 +41,12 @@ export const CalendarApp = () => {
     setLastView( event )
   } 
 
+
+  useEffect( () => {
+    startLoadingIncident();
+  }, [])
+
+
   return (
     <>
       <NavBar />
@@ -49,8 +55,8 @@ export const CalendarApp = () => {
         localizer={localizer}
         events={events}
         defaultView={ lastView as any || 'month' }
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor={(event) => { return new Date(event.start!) }}
+        endAccessor={(event) => { return new Date(event.end!) }}
         style={{ height: 'calc( 100vh - 80px )' }}
         messages={ getMessagesES() }
         eventPropGetter={ eventStyleGetter }

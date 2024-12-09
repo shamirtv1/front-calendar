@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addHours } from 'date-fns';
 
 export interface eventCalendar {
     _id?: number;
@@ -10,7 +9,8 @@ export interface eventCalendar {
     bgColor?: string;
     user?: {
         _id: number,
-        name: string
+        name: string,
+        email: string
     }
 }
 
@@ -22,20 +22,7 @@ interface calendarState {
 
 
 const initialState: calendarState = {
-    events: [
-        {
-            _id: new Date().getTime(),
-            title: 'Cumpleanos',
-            notes: 'Hay que comprar el pastel',
-            start: new Date(),
-            end: addHours(new Date(), 2),
-            bgColor: '#fafafa',
-            user: {
-                _id: 123,
-                name: "Shamir"
-            }
-        }
-    ],
+    events: [],
     activeEvent: null
 }
 
@@ -46,7 +33,7 @@ export const calendarSlice = createSlice({
         onSetActiveEvent: (state: calendarState, actions: PayloadAction<Partial<eventCalendar>>) => {
             state.activeEvent = actions.payload;
         },
-        onAddNewEvent: (state: calendarState, actions: PayloadAction<Partial<eventCalendar>>) => {
+        onAddNewEvent: (state: calendarState, actions: PayloadAction<eventCalendar>) => {
             state.events.push(actions.payload);
             state.activeEvent = null;
         },
@@ -56,17 +43,27 @@ export const calendarSlice = createSlice({
             })
         },
         onDeleteEvent: (state: calendarState) => {
-            if (state.activeEvent) {
-                state.events = state.events.filter((evento: eventCalendar) => {
-                    evento._id !== state.activeEvent?._id
-                });
-                state.activeEvent = null;
-            }
-
+            state.events.forEach((incident: eventCalendar, index) => {
+                if (incident._id === state.activeEvent?._id) state.events.splice(index, 1);
+            });
         },
+        onLoadIncidents: (state: calendarState, actions: PayloadAction<eventCalendar[]>) => {
+            actions.payload.forEach((incident: eventCalendar) => {
+                const exist = state.events.some((auxIncident: eventCalendar) => auxIncident._id === incident._id);
+                if (!exist) {
+                    state.events.push(incident)
+                }
+            })
+        }
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
+export const {
+    onSetActiveEvent,
+    onAddNewEvent,
+    onUpdateEvent,
+    onDeleteEvent,
+    onLoadIncidents
+} = calendarSlice.actions;
