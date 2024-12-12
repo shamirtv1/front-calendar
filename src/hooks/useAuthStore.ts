@@ -1,5 +1,5 @@
 import { incidentApi } from "../apis";
-import { onChecking, OnLogin, onLogout, useAppDispatch, useAppSelector } from "../store"
+import { onChecking, onClearIncidents, OnLogin, onLogout, useAppDispatch, useAppSelector } from "../store"
 
 
 export const useAuthStore = () => {
@@ -67,7 +67,9 @@ export const useAuthStore = () => {
 
     const startLogout = () => {
         localStorage.clear();
-        dispatch(onLogout(null))
+        dispatch(onLogout(null));
+        dispatch(onClearIncidents());
+        
     } 
 
 

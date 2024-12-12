@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { addSeconds, differenceInSeconds } from 'date-fns';
+import { differenceInSeconds, startOfDay } from 'date-fns';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale/es'
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,12 +30,17 @@ export const CalendarModal = () => {
     const { isDateModalOpen, closeDateModal } = useUiStore()
     const { activeEvent, startSavingEvent } = useCalendarStore()
 
-    const { register, handleSubmit, control, watch, formState, reset, getValues  } = useForm<Inputs>()
+    const { register, handleSubmit, control, trigger, watch, formState, reset, getValues } = useForm<Inputs>()
 
     //ACTUALIZA LOS CAMPOS DEL FORMULARIO CADA VEZ QUE CAMBIA LA NOTA ACTIVA
     useEffect(() => {
-        reset({...activeEvent});
+        reset({ ...activeEvent });
     }, [activeEvent]);
+
+
+    useEffect(() => { //FIXED BUG ISVALID FALSE AND ERROR EMPTY
+        void trigger();
+    }, [trigger, formState.isValid]);
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
@@ -83,6 +88,7 @@ export const CalendarModal = () => {
                                 render={({ field: { value, onChange } }) => (
                                     <DatePicker
                                         locale={'es'}
+                                        minDate={startOfDay(new Date())}
                                         dateFormat="Pp"
                                         className={!value ? 'form-control is-invalid' : 'form-control'}
                                         selected={value}
@@ -106,7 +112,7 @@ export const CalendarModal = () => {
                                 render={({ field: { value, onChange } }) => (
                                     <DatePicker
                                         locale={'es'}
-                                        minDate={addSeconds(watch('start'), 1)}
+                                        minDate={watch('start')}
                                         dateFormat="Pp"
                                         className={!value ? 'form-control is-invalid' : 'form-control'}
                                         selected={value}
