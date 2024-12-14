@@ -46,6 +46,7 @@ export const calendarSlice = createSlice({
             state.events.forEach((incident: eventCalendar, index) => {
                 if (incident._id === state.activeEvent?._id) state.events.splice(index, 1);
             });
+            state.activeEvent = null;
         },
         onLoadIncidents: (state: calendarState, actions: PayloadAction<eventCalendar[]>) => {
             actions.payload.forEach((incident: eventCalendar) => {
